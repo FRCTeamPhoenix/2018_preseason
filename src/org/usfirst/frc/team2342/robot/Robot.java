@@ -1,8 +1,10 @@
 package org.usfirst.frc.team2342.robot;
 
+import org.usfirst.frc.team2342.actions.*;
 import org.usfirst.frc.team2342.handler.JSONHandler;
 import org.usfirst.frc.team2342.models.Motor;
 import org.usfirst.frc.team2342.models.TalonReader;
+
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -27,6 +29,7 @@ public class Robot extends IterativeRobot
 	TalonReader tReader = new TalonReader();
 	SmartTalon m_motorT = new SmartTalon(0); 
 	Motor motor = new Motor(m_motorT, tReader.getID(), tReader.getName(), tReader.getMaxPower());
+	ActionQueue queue = null;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -37,6 +40,7 @@ public class Robot extends IterativeRobot
 	{
 		try 
 		{
+			queue = new ActionQueue();
 			jsonh.read(tReader.getClass());
 			System.out.println(tReader.getID() + "  " + tReader.getMaxPower() + "   " + tReader.getName());
 		}		
@@ -54,6 +58,7 @@ public class Robot extends IterativeRobot
 	{
 		timer.reset();
 		timer.start();
+		queue.appendAction(new ActionGoDistance(5));
 	}
 
 	/**
